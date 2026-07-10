@@ -23,8 +23,9 @@ Then open `http://localhost:8000`.
 
 - The app calls the OpenAI Responses API from the browser, using `gpt-5.6-terra` with medium reasoning for reviews and low reasoning for follow-up questions.
 - Review and follow-up calls use strict JSON Schema structured outputs. Review annotations are UTF-16 JavaScript spans, allowing the UI to underline the exact submitted text.
-- API keys are not committed or hard-coded. Each learner enters a key in the API key panel; it is stored in that browser's `localStorage` and sent directly to OpenAI.
-- A static site cannot keep an API key secret from someone using that browser. Use a dedicated, appropriately scoped key and avoid shared browsers. A production multi-user deployment should use a server-side proxy or an ephemeral-token flow instead.
+- API keys are not committed or hard-coded. Each learner enters their own key in the API key panel; it is kept in that tab's `sessionStorage` and sent directly to OpenAI. It is removed when the tab session ends.
+- A static site cannot keep an API key secret from someone using that browser. Use a dedicated, appropriately restricted key and avoid shared browsers. A production multi-user deployment should use a server-side proxy or an ephemeral-token flow instead.
+- The site has a restrictive Content Security Policy: it loads scripts and styles only from itself, and permits network requests only to the OpenAI API. It contains no analytics, third-party scripts, or server-side data store.
 - `store: false` is set on API calls. The app also sends a randomly generated, browser-local `safety_identifier` as recommended for end-user applications.
 
 ## Model availability

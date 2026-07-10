@@ -4,6 +4,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content="A simple tool for reviewing Spanish writing." />
+    <meta name="referrer" content="no-referrer" />
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src https://api.openai.com; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'" />
     <title>Spanish writing review</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
@@ -31,9 +33,7 @@
           </div>
           <div class="form-footer">
             <p class="quiet-note">Your text is sent directly to OpenAI for review.</p>
-            <button class="primary-button" id="review-button" type="submit">
-              <span>Review</span>
-            </button>
+            <button class="primary-button" id="review-button" type="submit">Review</button>
           </div>
         </form>
         <p class="key-reminder" id="key-reminder">Add an API key in Settings to begin.</p>
@@ -82,7 +82,7 @@
           <div class="conversation" id="conversation" aria-live="polite"></div>
           <form class="follow-up-form" id="follow-up-form">
             <label class="sr-only" for="follow-up-input">Ask a follow-up question</label>
-            <input id="follow-up-input" type="text" autocomplete="off" placeholder="Why is this subjunctive?" required />
+            <input id="follow-up-input" type="text" autocomplete="off" maxlength="600" placeholder="Why is this subjunctive?" required />
             <button class="primary-button compact" id="follow-up-button" type="submit">Ask</button>
           </form>
         </section>
@@ -97,7 +97,7 @@
           </div>
           <button class="icon-button" id="close-settings" type="button" aria-label="Close API key settings">×</button>
         </div>
-        <p class="dialog-copy">Your key is stored only in this browser and sent directly to OpenAI. Do not save a key on a shared device.</p>
+        <p class="dialog-copy">Your key is kept only for this browser session and sent directly to OpenAI. Do not use a shared device.</p>
         <label class="field-label" for="api-key">API key</label>
         <div class="key-input-wrap">
           <input id="api-key" type="password" autocomplete="off" spellcheck="false" placeholder="sk-proj-…" />
