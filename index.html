@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="A simple tool for reviewing Spanish writing." />
+    <title>Spanish writing review</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <header class="site-header">
+        <a class="tool-title" href="#" aria-label="Start a new Spanish review" data-new-query>Spanish writing review</a>
+        <div class="header-actions">
+          <span class="language-label">Spanish</span>
+          <button class="text-button" id="open-settings" type="button">Settings</button>
+        </div>
+      </header>
+
+      <section class="composer-view" id="composer-view" aria-labelledby="welcome-heading">
+        <div class="tool-intro">
+          <h1 id="welcome-heading">Check Spanish writing</h1>
+          <p>Paste a sentence or short paragraph to find errors and see concise explanations.</p>
+        </div>
+
+        <form class="writing-form" id="review-form">
+          <label class="field-label" for="student-text">Text to review</label>
+          <div class="textarea-wrap">
+            <textarea id="student-text" name="student-text" rows="6" maxlength="1800" placeholder="Hoy fui a la tienda y compré unas frutas..." required></textarea>
+            <span class="character-count" id="character-count" aria-live="polite">0 / 1800</span>
+          </div>
+          <div class="form-footer">
+            <p class="quiet-note">Your text is sent directly to OpenAI for review.</p>
+            <button class="primary-button" id="review-button" type="submit">
+              <span>Review</span>
+            </button>
+          </div>
+        </form>
+        <p class="key-reminder" id="key-reminder">Add an API key in Settings to begin.</p>
+      </section>
+
+      <section class="results-view" id="results-view" hidden aria-live="polite">
+        <div class="results-topline">
+          <div>
+            <h1>Review</h1>
+          </div>
+          <button class="secondary-button" type="button" data-new-query>
+            New review
+          </button>
+        </div>
+
+        <div class="review-summary" id="review-summary"></div>
+
+        <section class="annotated-panel" aria-labelledby="annotated-heading">
+          <div class="panel-heading">
+            <h2 id="annotated-heading">Original text</h2>
+            <p>Select a highlight to view its note.</p>
+          </div>
+          <div class="annotated-text" id="annotated-text"></div>
+        </section>
+
+        <section class="corrections-section" aria-labelledby="corrections-heading">
+          <div class="section-heading">
+            <h2 id="corrections-heading">Corrections</h2>
+            <span class="correction-count" id="correction-count"></span>
+          </div>
+          <div class="correction-list" id="correction-list"></div>
+        </section>
+
+        <section class="natural-panel" id="natural-panel" hidden aria-labelledby="natural-heading">
+          <div class="panel-heading">
+            <h2 id="natural-heading">Optional natural phrasing</h2>
+          </div>
+          <p id="natural-version"></p>
+        </section>
+
+        <section class="follow-up-panel" aria-labelledby="follow-up-heading">
+          <div class="panel-heading">
+            <h2 id="follow-up-heading">Follow-up question</h2>
+            <p>This does not change the review above.</p>
+          </div>
+          <div class="conversation" id="conversation" aria-live="polite"></div>
+          <form class="follow-up-form" id="follow-up-form">
+            <label class="sr-only" for="follow-up-input">Ask a follow-up question</label>
+            <input id="follow-up-input" type="text" autocomplete="off" placeholder="Why is this subjunctive?" required />
+            <button class="primary-button compact" id="follow-up-button" type="submit">Ask</button>
+          </form>
+        </section>
+      </section>
+    </main>
+
+    <dialog class="settings-dialog" id="settings-dialog" aria-labelledby="settings-heading">
+      <form id="settings-form" method="dialog">
+        <div class="dialog-heading">
+          <div>
+            <h2 id="settings-heading">Your OpenAI API key</h2>
+          </div>
+          <button class="icon-button" id="close-settings" type="button" aria-label="Close API key settings">×</button>
+        </div>
+        <p class="dialog-copy">Your key is stored only in this browser and sent directly to OpenAI. Do not save a key on a shared device.</p>
+        <label class="field-label" for="api-key">API key</label>
+        <div class="key-input-wrap">
+          <input id="api-key" type="password" autocomplete="off" spellcheck="false" placeholder="sk-proj-…" />
+          <button class="show-key" id="toggle-key" type="button" aria-pressed="false">Show</button>
+        </div>
+        <p class="dialog-error" id="key-error" role="alert"></p>
+        <div class="dialog-actions">
+          <button class="text-button danger" id="forget-key" type="button">Forget key</button>
+          <button class="primary-button" type="submit">Save key</button>
+        </div>
+      </form>
+    </dialog>
+
+    <template id="loading-template">
+      <div class="loading-state" role="status">
+        <span class="loading-orbit" aria-hidden="true"></span>
+        <span>Reviewing your Spanish…</span>
+      </div>
+    </template>
+
+    <script src="app.js"></script>
+  </body>
+</html>
