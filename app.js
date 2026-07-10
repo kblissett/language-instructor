@@ -2,7 +2,7 @@
   "use strict";
 
   // This is intentionally a browser-only app. Nothing here is a secret; the API key
-  // is supplied by the learner at runtime and kept only for the browser session.
+  // is supplied by the learner at runtime and stored only in that browser's localStorage.
   const API_URL = "https://api.openai.com/v1/responses";
   const MODEL = "gpt-5.6-terra";
   const KEY_STORAGE = "spanish-review.openai.api-key";
@@ -94,11 +94,11 @@ Use a short, concrete category and a concise explanation. Include a more natural
   let currentText = "";
 
   function getApiKey() {
-    return sessionStorage.getItem(KEY_STORAGE) || "";
+    return localStorage.getItem(KEY_STORAGE) || "";
   }
 
   function saveApiKey(key) {
-    sessionStorage.setItem(KEY_STORAGE, key);
+    localStorage.setItem(KEY_STORAGE, key);
     updateKeyReminder();
   }
 
@@ -114,7 +114,7 @@ Use a short, concrete category and a concise explanation. Include a more natural
 
   function updateKeyReminder() {
     const hasKey = Boolean(getApiKey());
-    els.keyReminder.textContent = hasKey ? "API key active for this browser session." : "Add an API key in Settings to begin.";
+    els.keyReminder.textContent = hasKey ? "API key saved in this browser." : "Add an API key in Settings to begin.";
     els.keyReminder.classList.toggle("is-ready", hasKey);
   }
 
@@ -478,7 +478,7 @@ Use a short, concrete category and a concise explanation. Include a more natural
     els.toggleKey.setAttribute("aria-pressed", String(!showing));
   });
   els.forgetKey.addEventListener("click", () => {
-    sessionStorage.removeItem(KEY_STORAGE);
+    localStorage.removeItem(KEY_STORAGE);
     els.apiKey.value = "";
     els.keyError.textContent = "Key removed from this browser.";
     updateKeyReminder();
@@ -502,7 +502,5 @@ Use a short, concrete category and a concise explanation. Include a more natural
   });
 
   updateCharacterCount();
-  // Remove a key saved by earlier versions that used persistent storage.
-  localStorage.removeItem(KEY_STORAGE);
   updateKeyReminder();
 })();
