@@ -26,7 +26,7 @@ Then open `http://localhost:8000`.
 - API keys are not committed or hard-coded. Each learner enters their own key in the API key panel; it is stored in that browser's `localStorage` and sent directly to OpenAI. Use **Forget key** before leaving a shared device.
 - A static site cannot keep an API key secret from someone using that browser. Use a dedicated, appropriately restricted key and avoid shared browsers. A production multi-user deployment should use a server-side proxy or an ephemeral-token flow instead.
 - The site has a restrictive Content Security Policy: it loads scripts and styles only from itself, and permits network requests only to the OpenAI API. It contains no analytics, third-party scripts, or server-side data store.
-- `store: false` is set on API calls. The app also sends a randomly generated, browser-local `safety_identifier` as recommended for end-user applications.
+- `store: false` is set on API calls, and prompt caching uses explicit mode without cache breakpoints so one-turn reviews do not incur cache-write costs. The app also sends a randomly generated, browser-local `safety_identifier` as recommended for end-user applications.
 
 ## Model availability
 

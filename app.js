@@ -157,7 +157,12 @@ Use a short, concrete category and a concise explanation. Include a more natural
           "Content-Type": "application/json",
           Authorization: `Bearer ${key}`
         },
-        body: JSON.stringify({ ...payload, safety_identifier: getSafetyIdentifier(), store: false })
+        body: JSON.stringify({
+          ...payload,
+          safety_identifier: getSafetyIdentifier(),
+          store: false,
+          prompt_cache_options: { mode: "explicit" }
+        })
       });
     } catch (error) {
       throw new Error("The connection to OpenAI failed. Check your network and try again.");
