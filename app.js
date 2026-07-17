@@ -12,7 +12,7 @@
   const REVIEW_SCHEMA = {
     type: "object",
     additionalProperties: false,
-    required: ["summary", "errors", "natural_version"],
+    required: ["summary", "errors", "english_translation", "natural_version"],
     properties: {
       summary: {
         type: "string",
@@ -34,6 +34,10 @@
             explanation: { type: "string", description: "A compact, precise explanation that teaches the relevant Spanish rule or usage." }
           }
         }
+      },
+      english_translation: {
+        type: "string",
+        description: "A faithful, best-effort English translation of the learner's original text as written, including [unclear] where meaning cannot be determined."
       },
       natural_version: {
         type: "string",
@@ -59,6 +63,8 @@ Find every real error in grammar, spelling, punctuation, agreement, verb form, s
 
 Each annotation must use zero-based UTF-16 JavaScript string offsets in the original text. The required invariant is original === text.slice(start, end). For something missing, use start === end and original === "" at the exact insertion point. The replacement must be only the text that should replace the span. Check all offsets and this invariant before responding.
 
+Translate the learner's original text into English as it is most reasonably understood. This is a meaning check, so translate the submitted wording rather than the corrected or natural version. Make a best effort when the Spanish is ambiguous or malformed, preserve meaningful ambiguity when possible, and use a brief [unclear] marker for any part whose meaning cannot reasonably be determined instead of inventing one. Always return a useful english_translation, even when parts are unclear.
+
 Use a short, concrete category and a concise explanation. Include a more natural full version only when it gives the learner useful optional phrasing; otherwise return an empty string. Be supportive, precise, and avoid filler.`;
 
   const els = {
@@ -73,6 +79,7 @@ Use a short, concrete category and a concise explanation. Include a more natural
     annotatedText: document.querySelector("#annotated-text"),
     correctionList: document.querySelector("#correction-list"),
     correctionCount: document.querySelector("#correction-count"),
+    englishTranslation: document.querySelector("#english-translation"),
     naturalPanel: document.querySelector("#natural-panel"),
     naturalVersion: document.querySelector("#natural-version"),
     followUpForm: document.querySelector("#follow-up-form"),
@@ -211,7 +218,7 @@ Use a short, concrete category and a concise explanation. Include a more natural
   }
 
   function validateReview(review, text) {
-    if (!review || typeof review.summary !== "string" || !Array.isArray(review.errors)) {
+    if (!review || typeof review.summary !== "string" || !Array.isArray(review.errors) || typeof review.english_translation !== "string" || !review.english_translation.trim()) {
       throw new Error("The instructor’s review was incomplete. Please try again.");
     }
     const errors = review.errors
@@ -228,6 +235,7 @@ Use a short, concrete category and a concise explanation. Include a more natural
     return {
       summary: review.summary,
       errors: nonOverlapping,
+      english_translation: review.english_translation.trim(),
       natural_version: typeof review.natural_version === "string" ? review.natural_version.trim() : ""
     };
   }
@@ -341,6 +349,7 @@ Use a short, concrete category and a concise explanation. Include a more natural
     currentReview = review;
     currentText = text;
     els.summary.textContent = review.summary;
+    els.englishTranslation.textContent = review.english_translation;
     renderAnnotatedText(text, review.errors);
     renderCorrections(review);
     renderNaturalVersion(review.natural_version);
