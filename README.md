@@ -1,6 +1,6 @@
 # Spanish writing review
 
-A static Spanish writing-review tool for GitHub Pages. Learners paste Spanish writing, receive structured corrections annotated in the original text, and can ask a follow-up question.
+A static Spanish writing-review tool for GitHub Pages. Learners paste Spanish writing, receive structured corrections annotated in the original text, see a best-effort English translation of what they wrote, and can ask a follow-up question.
 
 ## Run locally
 
@@ -22,7 +22,7 @@ Then open `http://localhost:8000`.
 ## API and privacy notes
 
 - The app calls the OpenAI Responses API from the browser, using `gpt-5.6-terra` with medium reasoning for reviews and low reasoning for follow-up questions.
-- Review and follow-up calls use strict JSON Schema structured outputs. Review annotations are UTF-16 JavaScript spans, allowing the UI to underline the exact submitted text.
+- Review and follow-up calls use strict JSON Schema structured outputs. A review includes a faithful, best-effort English translation of the submitted wording; ambiguous or incomprehensible parts may be marked as unclear. Review annotations are UTF-16 JavaScript spans, allowing the UI to underline the exact submitted text.
 - API keys are not committed or hard-coded. Each learner enters their own key in the API key panel; it is stored in that browser's `localStorage` and sent directly to OpenAI. Use **Forget key** before leaving a shared device.
 - A static site cannot keep an API key secret from someone using that browser. Use a dedicated, appropriately restricted key and avoid shared browsers. A production multi-user deployment should use a server-side proxy or an ephemeral-token flow instead.
 - The site has a restrictive Content Security Policy: it loads scripts and styles only from itself, and permits network requests only to the OpenAI API. It contains no analytics, third-party scripts, or server-side data store.

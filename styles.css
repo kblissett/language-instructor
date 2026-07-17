@@ -59,12 +59,15 @@ textarea:focus, .key-input-wrap:focus-within, .follow-up-form input:focus { bord
 .results-topline { display: flex; align-items: center; justify-content: space-between; gap: 16px; margin-bottom: 18px; }
 .results-topline h1 { margin: 0; }
 .review-summary { margin-bottom: 20px; color: var(--muted); font-size: 0.93rem; line-height: 1.55; }
-.annotated-panel, .natural-panel, .follow-up-panel { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
+.annotated-panel, .translation-panel, .natural-panel, .follow-up-panel { border: 1px solid var(--line); border-radius: 8px; background: var(--surface); }
 .annotated-panel { padding: 20px; }
 .panel-heading { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding-bottom: 13px; border-bottom: 1px solid var(--line-light); }
 .panel-heading h2, .section-heading h2 { margin: 0; color: var(--text); font-size: 0.98rem; font-weight: 680; letter-spacing: -0.01em; }
 .panel-heading p { margin: 0; color: var(--muted); font-size: 0.76rem; text-align: right; }
 .annotated-text { padding-top: 18px; color: var(--text); font-size: 1.02rem; line-height: 1.85; white-space: pre-wrap; }
+.translation-panel { margin-top: 22px; padding: 18px 20px; }
+.translation-panel > p:not(.translation-note) { margin: 14px 0 0; color: #344054; font-size: 0.96rem; line-height: 1.6; white-space: pre-wrap; }
+.translation-panel .translation-note { margin: 8px 0 0; color: var(--muted); font-size: 0.75rem; line-height: 1.45; }
 .annotation { border: 0; border-bottom: 2px solid var(--error); padding: 0 1px; background: var(--error-pale); color: inherit; font: inherit; cursor: pointer; }
 .annotation:hover, .annotation:focus { border-bottom-color: var(--accent); background: var(--accent-pale); outline: none; }
 .annotation-number { display: inline-grid; width: 1.25em; height: 1.25em; margin-left: 2px; place-items: center; border-radius: 50%; background: var(--error); color: #fff; font-family: Inter, ui-sans-serif, sans-serif; font-size: 0.53em; font-style: normal; font-weight: 750; line-height: 1; vertical-align: top; }
@@ -129,7 +132,7 @@ textarea:focus, .key-input-wrap:focus-within, .follow-up-form input:focus { bord
   .results-view { margin-top: 30px; }
   .panel-heading { align-items: flex-start; flex-direction: column; gap: 4px; }
   .panel-heading p { text-align: left; }
-  .annotated-panel, .follow-up-panel, .natural-panel { padding: 16px; }
+  .annotated-panel, .translation-panel, .follow-up-panel, .natural-panel { padding: 16px; }
   .follow-up-form { align-items: stretch; flex-direction: column; }
   .follow-up-form input { min-height: 40px; }
   .primary-button.compact { width: 100%; }
