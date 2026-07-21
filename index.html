@@ -3,21 +3,26 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="description" content="A simple tool for reviewing Spanish writing." />
+    <meta name="description" content="A simple tool for reviewing Spanish writing and expressing ideas naturally in Spanish." />
     <meta name="referrer" content="no-referrer" />
     <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src https://api.openai.com; script-src 'self'; style-src 'self'; img-src 'self' data:; font-src 'self'; object-src 'none'; base-uri 'none'; form-action 'self'" />
-    <title>Spanish writing review</title>
+    <title>Spanish language instructor</title>
     <link rel="stylesheet" href="styles.css" />
   </head>
   <body>
     <main class="app-shell">
       <header class="site-header">
-        <a class="tool-title" href="#" aria-label="Start a new Spanish review" data-new-query>Spanish writing review</a>
+        <a class="tool-title" href="#" aria-label="Return to the current Spanish tool" data-reset-current>Spanish language instructor</a>
         <div class="header-actions">
           <span class="language-label">Spanish</span>
           <button class="text-button" id="open-settings" type="button">Settings</button>
         </div>
       </header>
+
+      <nav class="mode-switcher" aria-label="Choose a learning mode">
+        <button class="mode-button is-active" id="review-mode-button" type="button" aria-pressed="true" data-mode="review">Check writing</button>
+        <button class="mode-button" id="expression-mode-button" type="button" aria-pressed="false" data-mode="expression">Express an idea</button>
+      </nav>
 
       <section class="composer-view" id="composer-view" aria-labelledby="welcome-heading">
         <div class="tool-intro">
@@ -37,6 +42,33 @@
           </div>
         </form>
         <p class="key-reminder" id="key-reminder">Add an API key in Settings to begin.</p>
+      </section>
+
+      <section class="composer-view" id="expression-composer-view" hidden aria-labelledby="expression-welcome-heading">
+        <div class="tool-intro">
+          <h1 id="expression-welcome-heading">Express an idea in Spanish</h1>
+          <p>Describe what you want to say in any language. You’ll get a natural, clear, and idiomatic Spanish expression—not a word-for-word translation.</p>
+        </div>
+
+        <form class="writing-form" id="expression-form">
+          <label class="field-label" for="idea-text">What do you want to say?</label>
+          <div class="textarea-wrap">
+            <textarea id="idea-text" name="idea-text" rows="6" maxlength="1800" placeholder="I want to politely tell a friend that I’m running late but should be there soon." required></textarea>
+            <span class="character-count" id="idea-character-count" aria-live="polite">0 / 1800</span>
+          </div>
+          <label class="translation-preference" for="close-translation">
+            <input id="close-translation" type="checkbox" />
+            <span>
+              <strong>Keep it close to my wording</strong>
+              <small>Still natural, but preserve the original phrasing and structure when possible.</small>
+            </span>
+          </label>
+          <div class="form-footer">
+            <p class="quiet-note">Your idea is sent directly to OpenAI.</p>
+            <button class="primary-button" id="expression-button" type="submit">Express in Spanish</button>
+          </div>
+        </form>
+        <p class="key-reminder" id="expression-key-reminder">Add an API key in Settings to begin.</p>
       </section>
 
       <section class="results-view" id="results-view" hidden aria-live="polite">
@@ -96,6 +128,36 @@
           </form>
         </section>
       </section>
+
+      <section class="results-view" id="expression-results-view" hidden aria-live="polite">
+        <div class="results-topline">
+          <div>
+            <p class="result-eyebrow">Spanish expression</p>
+            <h1>A natural way to say it</h1>
+          </div>
+          <button class="secondary-button" type="button" data-new-expression>New expression</button>
+        </div>
+
+        <div class="expression-result-card">
+          <p class="expression-output" id="spanish-expression"></p>
+          <button class="text-button copy-button" id="copy-expression" type="button">Copy</button>
+        </div>
+
+        <section class="idea-panel" aria-labelledby="idea-heading">
+          <div class="panel-heading">
+            <h2 id="idea-heading">Your idea</h2>
+            <span class="preference-badge" id="expression-preference"></span>
+          </div>
+          <p id="submitted-idea"></p>
+        </section>
+
+        <section class="expression-note-panel" id="expression-note-panel" hidden aria-labelledby="expression-note-heading">
+          <div class="panel-heading">
+            <h2 id="expression-note-heading">Nuance</h2>
+          </div>
+          <p id="expression-note"></p>
+        </section>
+      </section>
     </main>
 
     <dialog class="settings-dialog" id="settings-dialog" aria-labelledby="settings-heading">
@@ -126,6 +188,8 @@
         <span>Reviewing your Spanish…</span>
       </div>
     </template>
+
+    <div class="copy-status" id="copy-status" role="status" aria-live="polite"></div>
 
     <script src="app.js"></script>
   </body>

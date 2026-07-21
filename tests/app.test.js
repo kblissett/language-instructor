@@ -35,6 +35,7 @@ class FakeElement {
     this.classList = new FakeClassList();
     this.dataset = {};
     this.hidden = false;
+    this.checked = false;
     this.textContent = "";
     this.value = "";
     this.listeners = new Map();
@@ -122,6 +123,13 @@ async function submitReview(harness, text) {
   await form.listeners.get("submit")({ preventDefault() {} });
 }
 
+async function submitExpression(harness, idea, closeTranslation = false) {
+  const form = harness.elements.get("#expression-form");
+  harness.elements.get("#idea-text").value = idea;
+  harness.elements.get("#close-translation").checked = closeTranslation;
+  await form.listeners.get("submit")({ preventDefault() {} });
+}
+
 test("review requests and displays a faithful English translation", async () => {
   const harness = loadApp({
     summary: "Bien escrito.",
@@ -161,4 +169,45 @@ test("an incomplete review cannot silently render a blank translation", async ()
   assert.equal(harness.elements.get("#composer-view").hidden, false);
   assert.equal(harness.elements.get("#results-view").hidden, true);
   assert.match(harness.elements.get("#key-reminder").textContent, /review was incomplete/i);
+});
+
+test("expression mode defaults to natural meaning rather than close translation", async () => {
+  const harness = loadApp({
+    spanish_expression: "Voy un poco tarde, pero ya casi llego.",
+    note: ""
+  });
+
+  await submitExpression(harness, "I want to politely tell a friend that I am running late but will be there soon.");
+
+  assert.equal(harness.elements.get("#spanish-expression").textContent, "Voy un poco tarde, pero ya casi llego.");
+  assert.equal(harness.elements.get("#expression-preference").textContent, "Natural phrasing");
+  const body = harness.getRequestBody();
+  assert.equal(JSON.parse(body.input).close_translation, false);
+  assert.match(body.instructions, /do not translate word for word/i);
+  assert.match(HTML_SOURCE, /Keep it close to my wording/);
+});
+
+test("expression mode requests a still-natural close translation when checked", async () => {
+  const harness = loadApp({
+    spanish_expression: "No dejes para mañana lo que puedas hacer hoy.",
+    note: "This keeps the original proverb-like structure."
+  });
+
+  await submitExpression(harness, "Don't put off until tomorrow what you can do today.", true);
+
+  const body = harness.getRequestBody();
+  assert.equal(JSON.parse(body.input).close_translation, true);
+  assert.match(body.instructions, /still-natural translation that stays as close as reasonably possible/i);
+  assert.equal(harness.elements.get("#expression-preference").textContent, "Close translation");
+  assert.equal(harness.elements.get("#expression-note-panel").hidden, false);
+});
+
+test("an incomplete expression returns to the expression composer", async () => {
+  const harness = loadApp({ spanish_expression: "", note: "" });
+
+  await submitExpression(harness, "Tell them I will call tomorrow.");
+
+  assert.equal(harness.elements.get("#expression-composer-view").hidden, false);
+  assert.equal(harness.elements.get("#expression-results-view").hidden, true);
+  assert.match(harness.elements.get("#expression-key-reminder").textContent, /expression was incomplete/i);
 });
