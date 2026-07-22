@@ -94,10 +94,14 @@
         <section class="translation-panel" aria-labelledby="translation-heading">
           <div class="panel-heading">
             <h2 id="translation-heading">Your meaning in English</h2>
-            <p>Best-effort translation of your original text.</p>
+            <p id="translation-status">Translation of your original wording.</p>
           </div>
-          <p id="english-translation"></p>
-          <p class="translation-note">Ambiguous or incomprehensible wording may be marked as unclear.</p>
+          <p id="english-translation" hidden></p>
+          <p class="translation-explanation" id="translation-explanation" hidden></p>
+          <div class="translation-alternatives" id="translation-alternatives" hidden>
+            <h3>Possible intended meanings</h3>
+            <ul id="translation-alternatives-list"></ul>
+          </div>
         </section>
 
         <section class="corrections-section" aria-labelledby="corrections-heading">
