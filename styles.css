@@ -78,8 +78,11 @@ textarea:focus, .key-input-wrap:focus-within, .follow-up-form input:focus { bord
 .panel-heading p { margin: 0; color: var(--muted); font-size: 0.76rem; text-align: right; }
 .annotated-text { padding-top: 18px; color: var(--text); font-size: 1.02rem; line-height: 1.85; white-space: pre-wrap; }
 .translation-panel { margin-top: 22px; padding: 18px 20px; }
-.translation-panel > p:not(.translation-note) { margin: 14px 0 0; color: #344054; font-size: 0.96rem; line-height: 1.6; white-space: pre-wrap; }
-.translation-panel .translation-note { margin: 8px 0 0; color: var(--muted); font-size: 0.75rem; line-height: 1.45; }
+.translation-panel > p { margin: 14px 0 0; color: #344054; font-size: 0.96rem; line-height: 1.6; white-space: pre-wrap; }
+.translation-panel .translation-explanation { color: var(--muted); font-size: 0.86rem; }
+.translation-alternatives { margin-top: 16px; }
+.translation-alternatives h3 { margin: 0 0 8px; color: #344054; font-size: 0.78rem; font-weight: 700; }
+.translation-alternatives ul { display: grid; gap: 7px; margin: 0; padding-left: 20px; color: #344054; font-size: 0.9rem; line-height: 1.5; }
 .annotation { border: 0; border-bottom: 2px solid var(--error); padding: 0 1px; background: var(--error-pale); color: inherit; font: inherit; cursor: pointer; }
 .annotation:hover, .annotation:focus { border-bottom-color: var(--accent); background: var(--accent-pale); outline: none; }
 .annotation-number { display: inline-grid; width: 1.25em; height: 1.25em; margin-left: 2px; place-items: center; border-radius: 50%; background: var(--error); color: #fff; font-family: Inter, ui-sans-serif, sans-serif; font-size: 0.53em; font-style: normal; font-weight: 750; line-height: 1; vertical-align: top; }
